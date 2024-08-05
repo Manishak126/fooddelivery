@@ -1,11 +1,15 @@
 import { createContext, useState, useEffect } from "react";
-import { food_list } from "../assets/assets";
+// import { food_list } from "../assets/assets";
+import axios from 'axios'
 
 export const StoreContext = createContext(null)
 
 const StoreContextProvider = (props) =>{
 
     const [cartItems, setCartItems]= useState({})
+    const url = "http://localhost:4000";
+    const [token, setToken]= useState("")
+    const [food_list,setFoodList] = useState([])
 
     const addToCart=(itemId)=>{
         if(!cartItems[itemId]){ //Checking whether any product is available in the cart or not
@@ -44,15 +48,34 @@ const StoreContextProvider = (props) =>{
         return totalQuantity;
     }
 
-    const contextValue= {
-        food_list,
-        cartItems,
-        setCartItems,
-        addToCart,
-        removeFromCart,
-        getTotalCartAmount,
-        getTotalQuantity
+    const fetchFoodList = async()=>{
+        const response = await axios.get(url+"/api/food/list")
+        setFoodList(response.data.data)
     }
+
+    // It will help the user to stay loggedin even after refreshing the page
+    useEffect(()=>{
+        async function loadData(){
+            await fetchFoodList()
+            if (localStorage.getItem("token")) {
+              setToken(localStorage.getItem("token"));
+            }
+        }
+        loadData()
+    },[])
+
+    const contextValue = {
+      food_list,
+      cartItems,
+      setCartItems,
+      addToCart,
+      removeFromCart,
+      getTotalCartAmount,
+      getTotalQuantity,
+      url,
+      token,
+      setToken
+    };
 
     return(
         <StoreContext.Provider value={contextValue}>

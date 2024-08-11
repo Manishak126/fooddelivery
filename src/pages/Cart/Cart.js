@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import './Cart.css'
 import { StoreContext } from '../../context/StoreContext'
 import { useNavigate } from 'react-router'
+
 const Cart = () => {
   const {cartItems, food_list, removeFromCart, getTotalCartAmount,url} = useContext(StoreContext)
 
@@ -19,10 +20,10 @@ const Cart = () => {
         </div>
         <br />
         <hr />
-        {food_list.map((item, index)=>{
+        {food_list.map((item)=>{
           if(cartItems[item._id]>0){
             return(
-              <>
+              <React.Fragment key={item._id}>
               <div className="cart-items-title cart-items-item">
                   <img src={url+"/images/"+item.image} alt="" />
                   <p>{item.name}</p>
@@ -32,15 +33,16 @@ const Cart = () => {
                   <p onClick={()=>removeFromCart(item._id)} className='cross'>X</p>
               </div>
               <hr />
-              </>   
-            )
+              </React.Fragment>   
+            );
           }
+           return null;
         })}
       </div>
 
       <div className="cart-bottom">
         <div className="cart-total">
-          <head>Cart Totals</head>
+          <h2>Cart Totals</h2>
           <div>
             <div className="cart-total-details">
               <p>Subtotal</p>

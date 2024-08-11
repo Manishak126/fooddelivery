@@ -12,6 +12,7 @@ import Footer from './components/Footer/Footer';
 import LoginPopUp from './components/LoginPopUp/LoginPopUp';
 import ScrollToTop from "react-scroll-to-top";
 import Verify from './pages/Verify/Verify.js';
+import Myorders from './pages/MyOrders/Myorders.js';
 
 const App = () => {
 
@@ -29,6 +30,7 @@ const App = () => {
               <Route exact path="/cart" element={<Cart />}></Route>
               <Route exact path="/order" element={<PlaceOrder />}></Route>
               <Route exact path='/verify' element={<Verify/>}></Route>
+              <Route exact path='/myorders' element={<Myorders/>}></Route>
             </Routes>
         </Router>
       </div>
